@@ -6,8 +6,8 @@
 > Tell the assistant what to invoice in plain words — it drafts the invoice,
 > you sign once, and tUSD8 settles on-chain in escrow on QDay Aevum Testnet.
 
-**Live demo:** _(URL after deployment — the demo runs at `http://localhost:3000` locally)_
-**Contract:** _(address after deployment — see `deployments/aevum.json`)_
+**Live demo:** run locally with `npm run demo` (http://localhost:3000) — connects MetaMask to Aevum Testnet
+**Contract (Aevum Testnet, chain 44005):** [`0x0033E3d2B445931e33b377bF7d59F8ccC2024C07`](https://explorer-test.qday.info/address/0x0033E3d2B445931e33b377bF7d59F8ccC2024C07) — source verified on the explorer, deployed 26 Nov 2026 ([tx `0x870211ae…`](https://explorer-test.qday.info/tx/0x870211ae378f22e3419511004d66e31cbc824a1c5ba0a82e4fea1463503bb654), block 4124948)
 **Explorer:** https://explorer-test.qday.info
 
 ## The problem
@@ -157,15 +157,17 @@ Open the demo, connect MetaMask (it offers to add Aevum Testnet, chain
 
 - [x] Public GitHub repo, MIT license, clean readable code
 - [x] Smart contract on Aevum Testnet + verified source (see note below)
-- [ ] Live deployment / demo URL _(after `deploy.js` + hosting the demo)_
+- [x] Live deployment — InvoiceAgent `0x0033E3d2B445931e33b377bF7d59F8ccC2024C07` on Aevum Testnet, source verified (26 Nov 2026); demo runs locally via `npm run demo`
 - [x] Documentation (this README + `docs/DEMO_SCRIPT.md`)
 - [ ] Submit at https://dorahacks.io/hackathon/qday/detail before **11 Dec 2026, 08:00 UTC (15:00 WIB)**
 - [ ] Top 5: live 3–5 min demo on **15 Dec 2026, 06:00 UTC (13:00 WIB)** — video call, no pre-recorded video
 
 **Note on explorer verification:** at least one other builder (RelayPay,
 deployed 20 Nov 2026) reported that the Aevum explorer's contract
-verification was not working yet. If verification fails, the full source is
-in this repo and the deployment tx + address are in `deployments/aevum.json`.
+verification was not working yet. That turned out to be outdated — this
+contract was verified successfully on 26 Nov 2026 via Hardhat's verify
+plugin against the explorer's Etherscan-compatible API (see
+`hardhat.config.js` → `etherscan.customChains`).
 
 ## Known limitations
 
