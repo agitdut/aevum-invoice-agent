@@ -1,0 +1,17 @@
+{
+  "ranAt": "2026-11-26T05:58:00+07:00",
+  "invoiceId": 0,
+  "amount": "0.5 tUSD8",
+  "seller": "0xDe847F3aEa243101373130005eBBe9e2C7837118",
+  "payer": "0xD85808D7c2186a29f31E39201689A93F239A0E51",
+  "fundTusd8Tx": "0x45e6bd93a6783c4c823d5267b1d84f2858fc2ef33c6f680c0c4b5c2142ac0801",
+  "fundTqdayTx": "0x25614bc9201e6d7115651ed3f7f82a261f70e9764a25ba931d0f911f730d9909",
+  "createInvoiceTx": "0x342c89f190875d8050d0cd4b5a8cab610861483a7bf52b290bfcc8f69b89b2c0",
+  "createInvoiceBlock": 4125618,
+  "approveTx": "0x08171d387d238104dd2397935913c279acfad179cd7bd9c518da1a40719304c1",
+  "payInvoiceTx": "0x997f7568b02501b3c0d6d63f244d915c14d2eb15006d1a4007c20c7ac6f89685",
+  "confirmReceiptTx": "0x80a66f2518bd5cb5fcb8826728b6cfbdf314af2cd599b101d633fc694ebd1cf8",
+  "finalStatus": "Completed (2)",
+  "escrowAfter": "0.0 tUSD8",
+  "explorer": "https://explorer-test.qday.info/address/0x0033E3d2B445931e33b377bF7d59F8ccC2024C07"
+}
