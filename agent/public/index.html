@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aevum Invoice Agent — AI invoices settled in tUSD8</title>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --line:#30363d; --text:#e6edf3; --muted:#8b949e; --accent:#2f81f7; --green:#3fb950; --amber:#d29922; --red:#f85149; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  header { max-width:960px; margin:0 auto; padding:28px 20px 8px; }
+  h1 { font-size:26px; margin:0 0 4px; }
+  h1 span { color:var(--accent); }
+  p.sub { color:var(--muted); margin:0 0 16px; }
+  main { max-width:960px; margin:0 auto; padding:0 20px 60px; display:grid; gap:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .muted { color:var(--muted); font-size:13px; }
+  button { background:var(--accent); color:#fff; border:0; border-radius:8px; padding:9px 16px; font-size:14px; cursor:pointer; }
+  button:disabled { opacity:.45; cursor:default; }
+  button.ghost { background:transparent; border:1px solid var(--line); color:var(--text); }
+  button.danger { background:var(--red); }
+  button.warn { background:var(--amber); color:#111; }
+  input, textarea { width:100%; background:#0d1117; border:1px solid var(--line); color:var(--text); border-radius:8px; padding:11px 12px; font-size:15px; }
+  textarea { resize:vertical; min-height:64px; }
+  .badge { display:inline-block; padding:2px 9px; border-radius:20px; font-size:12px; font-weight:600; }
+  .b-Created { background:#1f6feb33; color:#79c0ff; } .b-Paid { background:#d2992233; color:#e3b341; }
+  .b-Completed { background:#3fb95033; color:#56d364; } .b-Refunded { background:#8b949e33; color:#b1bac4; }
+  .b-Cancelled { background:#f8514933; color:#ff7b72; } .b-Disputed { background:#bc8cff33; color:#d2a8ff; }
+  .invoice { border:1px solid var(--line); border-radius:10px; padding:14px; margin-top:12px; }
+  .invoice h3 { margin:0 0 6px; font-size:16px; }
+  .kv { display:grid; grid-template-columns:110px 1fr; gap:2px 10px; font-size:14px; margin:8px 0; }
+  .kv dt { color:var(--muted); } .kv dd { margin:0; word-break:break-all; }
+  .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  #log { font-size:13px; max-height:220px; overflow:auto; }
+  #log div { padding:5px 0; border-bottom:1px dashed var(--line); word-break:break-all; }
+  #log a { color:var(--accent); }
+  .parsed { background:#0d1117; border:1px solid var(--line); border-radius:10px; padding:12px; margin-top:12px; }
+  .examples button { font-size:12px; padding:6px 10px; }
+  .notice { background:#d299221c; border:1px solid var(--amber); border-radius:10px; padding:12px 14px; }
+  code { background:#0d1117; padding:1px 6px; border-radius:5px; font-size:13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Aevum <span>Invoice Agent</span></h1>
+  <p class="sub">Tell the assistant what to invoice in plain words — it drafts the invoice,
+  you sign once, and tUSD8 settles on-chain in escrow on QDay Aevum Testnet (chain 44005).
+  Built for Aevum Builder Challenge #1 · tracks: Native AI Assistants × Invoice Payments.</p>
+</header>
+<main>
+  <div id="deployNotice" class="notice" hidden></div>
+
+  <section class="card">
+    <div class="row">
+      <button id="connectBtn">Connect wallet</button>
+      <span id="walletInfo" class="muted">Not connected</span>
+      <span id="balances" class="muted" style="margin-left:auto"></span>
+    </div>
+    <p class="muted" style="margin:10px 0 0">Need test tokens? Claim 5 tQDAY + tUSD8 at
+      <a href="https://faucet.qday.info" target="_blank" rel="noopener">faucet.qday.info</a>
+      (once every 24h). Then approve tUSD8 once before paying your first invoice.</p>
+  </section>
+
+  <section class="card">
+    <h2 style="margin:0 0 10px;font-size:18px">💬 Ask the invoice assistant</h2>
+    <textarea id="askInput" placeholder='e.g. Buatkan invoice 150 tUSD8 untuk 0x742d35Cc6634C0532925a3b844Bc454e4438f44e, jasa desain logo, jatuh tempo 5 Des'></textarea>
+    <div class="row" style="margin-top:10px">
+      <button id="askBtn">Parse request</button>
+      <span id="parseStatus" class="muted"></span>
+    </div>
+    <div class="examples row" style="margin-top:10px">
+      <button data-ex="Buatkan invoice 250 tUSD8 untuk 0x742d35Cc6634C0532925a3b844Bc454e4438f44e, jasa pembuatan website, jatuh tempo dalam 7 hari">ID example</button>
+      <button data-ex="Create an invoice for 80 tUSD8 to 0x742d35Cc6634C0532925a3b844Bc454e4438f44e for monthly bookkeeping, due Dec 20">EN example</button>
+      <button data-ex="Pay invoice #0">Pay #0</button>
+      <button data-ex="Confirm invoice #0">Confirm #0</button>
+    </div>
+    <div id="parsedBox"></div>
+  </section>
+
+  <section class="card">
+    <div class="row">
+      <h2 style="margin:0;font-size:18px">📄 Invoices on-chain</h2>
+      <button id="refreshBtn" class="ghost" style="margin-left:auto">Refresh</button>
+    </div>
+    <p class="muted">Escrow flow: seller creates → payer pays (tUSD8 locked) → payer confirms receipt
+      (funds release) · or dispute / refund / auto-release after 7 days of silence.</p>
+    <div id="invoiceList"><p class="muted">Connect a wallet and deploy the contract to load invoices.</p></div>
+  </section>
+
+  <section class="card">
+    <h2 style="margin:0 0 8px;font-size:18px">🧾 Activity</h2>
+    <div id="log"><div class="muted">No transactions yet.</div></div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
