@@ -1,1 +1,6 @@
-{"chainId":44005,"contractAddress":null,"explorer":"https://explorer-test.qday.info","note":"Contract not deployed yet — run: npx hardhat run scripts/deploy.js --network aevum (needs tQDAY in the deployer wallet; claim at https://faucet.qday.info)","tusd8":"0x456569838f1d43009A91ebA4263147Afd7233483"}
+{
+  "chainId": 44005,
+  "contractAddress": "0x0033E3d2B445931e33b377bF7d59F8ccC2024C07",
+  "tusd8": "0x456569838f1d43009A91ebA4263147Afd7233483",
+  "explorer": "https://explorer-test.qday.info"
+}

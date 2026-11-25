@@ -11,4 +11,17 @@ module.exports = {
       accounts: process.env.DEPLOYER_PRIVATE_KEY ? [process.env.DEPLOYER_PRIVATE_KEY] : [],
     },
   },
+  etherscan: {
+    apiKey: { aevum: "dummy" },
+    customChains: [
+      {
+        network: "aevum",
+        chainId: 44005,
+        urls: {
+          apiURL: "https://explorer-test.qday.info/api",
+          browserURL: "https://explorer-test.qday.info",
+        },
+      },
+    ],
+  },
 };
