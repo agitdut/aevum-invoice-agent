@@ -10,22 +10,27 @@ ready in MetaMask: **Seller** (presenter) and **Payer** (second account).
 money, but creating an on-chain invoice still means a form full of hex
 addresses. So we built an assistant you just talk to."
 
+> **Funding note:** the QDay faucet gives 1 tUSD8 per wallet per day (the
+> Discord `/faucet` gives 5 tUSD8), so this script uses small amounts that
+> fit a few days of claims. Pre-fund both wallets before the call — the
+> happy path needs 0.5 tUSD8, the dispute demo 0.3 tUSD8 (0.8 total).
+
 ## 0:30–1:30 — The happy path (60s)
 
 1. Open the demo. Type (Indonesian, to show it is bilingual):
-   _"Buatkan invoice 150 tUSD8 untuk 0x742d…, jasa desain logo, jatuh tempo 5 Des"_
+   _"Buatkan invoice 0,5 tUSD8 untuk 0x742d…, jasa desain logo, jatuh tempo 5 Des"_
 2. The assistant shows the parsed invoice — amount, payer, due date, memo —
    and asks for confirmation. Nothing executes silently.
 3. Click **Create invoice on-chain**, sign in MetaMask. Show the tx on the
    Aevum explorer.
 4. Switch to the Payer account, approve tUSD8, click **Pay**. Point out the
-   escrow: the contract now holds 150 tUSD8.
+   escrow: the contract now holds 0.5 tUSD8.
 5. Click **Confirm receipt**. Escrow releases to the seller. Show the seller's
    balance increase and the invoice status flipping to Completed.
 
 ## 1:30–2:30 — The safety story (60s)
 
-1. Create a second invoice (80 tUSD8, "monthly bookkeeping"), pay it.
+1. Create a second invoice (0.3 tUSD8, "monthly bookkeeping"), pay it.
 2. As the payer, click **Dispute**. The escrow freezes.
 3. As the seller, **Resolve: refund payer** — funds return immediately.
 4. Explain the two backstops, briefly: if a dispute is never resolved, the
